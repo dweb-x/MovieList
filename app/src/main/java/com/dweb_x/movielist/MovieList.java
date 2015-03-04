@@ -23,13 +23,44 @@ public class MovieList { //singleton
     private static Map<String,MovieEntry> movies;
     private File CFG_FILE;
     private static Thread loadThread, saveThread;
-    private Context context;
 
     /**
      * Constructor uses singleton pattern. call getInstance() for new instance.
      */
-    private MovieList(){
+    private MovieList(Context context){
         movies = new LinkedHashMap<>();
+        CFG_FILE = new File(context.getApplicationContext().getFilesDir() , "movlist.cfg");
+        boolean configFound = false;
+
+        //if file exists load it else create new.
+        if(CFG_FILE.exists()){
+            loadList();
+            configFound = true;
+        }else {
+            saveList();
+        }
+
+        Log.v("Config found", Boolean.toString(configFound));
+    }
+
+//    /**
+//     * Use of singleton pattern ensures only one running instance
+//     * @return instance of MovieList
+//     */
+//    public static synchronized MovieList getInstance(){
+//        return instance;
+//    }
+
+    /**
+     * Use of singleton pattern ensures only one running instance.
+     * @param context android content context used for file location.
+     * @return instance of MovieList
+     */
+    public static synchronized MovieList getInstance(Context context){
+        if(instance == null){
+            instance = new MovieList(context);
+        }
+        return instance;
     }
 
     /**
@@ -65,22 +96,21 @@ public class MovieList { //singleton
             saveThread = new Thread(new Runnable() {
                 public void run() {
                     try {
-                        while(loadThread != null){
-                            Thread.sleep(100);
-                        }
+//                        while(loadThread != null){
+//                            Thread.sleep(100);
+//                        }
+                        Log.v("Save path", CFG_FILE.toString());
                         FileOutputStream out = new FileOutputStream(CFG_FILE);
                         ObjectOutputStream os = new ObjectOutputStream(out);
                         os.writeObject(movies);
+                        Log.v("Saved", movies.size() + " items to disk");
                         out.close();
                         os.close();
-                    } catch (Exception e) {
-                        if(e.getMessage() != null)
-                        Log.e("Save Error:", e.getMessage());
-                    }
+                    } catch (Exception e) {logException(e);}
                 }
             });
             saveThread.start();
-        } catch(Exception e){Log.e("Error:", e.getMessage());}
+        } catch(Exception e){logException(e);}
     }
 
     /**
@@ -93,20 +123,22 @@ public class MovieList { //singleton
             loadThread = new Thread(new Runnable() {
                 public void run() {
                     try{
-                        while(saveThread != null){
-                            Thread.sleep(100);
-                        }
+//                        while(saveThread != null){
+//                            Thread.sleep(100);
+//                        }
+                        Log.v("Load path", CFG_FILE.toString());
                         FileInputStream in = new FileInputStream(CFG_FILE);
                         ObjectInputStream os = new ObjectInputStream(in);
                         movies = (Map<String,MovieEntry>) os.readObject();
+                        Log.v("Loaded", movies.size() + " Entries from disk");
                         in.close();
                         os.close();
-                    } catch(Exception e){Log.e("Load Error:", e.getMessage());}
+                    } catch(Exception e){logException(e);}
                 }
             });
 
-            loadThread .start();
-        } catch(Exception e){Log.e("Error:", e.getMessage());}
+            loadThread.start();
+        } catch(Exception e){ logException(e); }
     }
 
     /**
@@ -137,39 +169,6 @@ public class MovieList { //singleton
     }
 
     /**
-     * Use of singleton pattern ensures only one running instance
-     * @return instance of MovieList
-     */
-    public static synchronized MovieList getInstance(){
-        if(instance == null){
-            instance = new MovieList();
-        }
-        return instance;
-    }
-
-    /**
-     * Use of singleton pattern ensures only one running instance.
-     * @param context android content context used for file location.
-     * @return instance of MovieList
-     */
-    public static synchronized MovieList getInstance(Context context){
-        if(instance == null){
-            instance = new MovieList();
-            instance.setContext(context);
-        }
-        return instance;
-    }
-
-    /**
-     * allows the android context to be set for IO.
-     * @param context android content context used for file location.
-     */
-    public void setContext(Context context){
-        instance.context = context;
-        CFG_FILE = new File(context.getExternalFilesDir(null), "movlist.cfg");
-    }
-
-    /**
      * Collection output as string
      * @return movies list
      */
@@ -183,7 +182,20 @@ public class MovieList { //singleton
      * @return keys as string array.
      */
     public String[] keys(){
-        return movies.keySet().toArray(new String[movies.size()]);
+        if(movies.size() >0)
+            return movies.keySet().toArray(new String[movies.size()]);
+        else
+            return new String[]{"Your movie list is currently empty"} ;
+    }
+
+    /*
+     *  Sends exceptions to Logcat
+     */
+    private void logException(Exception e){
+        if(e.getMessage() != null)
+            Log.e("Error:", e.getMessage());
+        else
+            Log.e("Error:", "Exception thrown in MovieList");
     }
 
 }

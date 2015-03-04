@@ -16,7 +16,7 @@ import android.widget.TextView;
  * email: dave@dweb-x.com
  */
 public class DetailsFragment extends android.support.v4.app.Fragment{
-    MovieList list = MovieList.getInstance();
+    MovieList list = MovieList.getInstance(getActivity());
     String[] keyList = list.keys();
 
     public static DetailsFragment newInstance(int index){

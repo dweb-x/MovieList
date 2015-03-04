@@ -19,18 +19,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        MovieList list = MovieList.getInstance(this);
-        MovieEntry test1 = new MovieEntry();
-        test1.setTitle("Test");
-        test1.setType("ACTION");
-        test1.setRating("PG");
-        list.newEntry("test", test1);
-        MovieEntry test2 = new MovieEntry();
-        test2.setTitle("Testing testing");
-        test2.setType("ACTION");
-        test2.setRating("18");
-        list.newEntry("test2", test2);
-        list.saveList();
     }
 
 
@@ -51,8 +39,6 @@ public class MainActivity extends ActionBarActivity {
             Log.v("menuClick", "new");
             Intent intent = new Intent();
             intent.setClass(this, KeyActivity.class);
-            //intent.setClass(this, AddItemActivity.class);
-            //intent.putExtra("index", index);
             startActivity(intent);
         }
 

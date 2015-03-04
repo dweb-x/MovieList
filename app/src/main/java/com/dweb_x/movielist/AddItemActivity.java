@@ -35,7 +35,7 @@ public class AddItemActivity extends ActionBarActivity {
             Log.v("Add Item Error", "NULL Key");
         }
 
-        list = MovieList.getInstance();
+        list = MovieList.getInstance(this);
 
         //Form elements
         title =(EditText)findViewById(R.id.addEditTextTitle);

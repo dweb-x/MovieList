@@ -22,8 +22,9 @@ public class TitlesFragment extends android.support.v4.app.ListFragment{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        list = MovieList.getInstance();
-        list.loadList();
+        //init movie list
+        list = MovieList.getInstance(getActivity());
+
         keyList = list.keys();
 
         ArrayAdapter<String> connectArrayToListView = new
