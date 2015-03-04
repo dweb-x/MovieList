@@ -29,7 +29,7 @@ public class MovieList { //singleton
      * Constructor uses singleton pattern. call getInstance() for new instance.
      */
     private MovieList(){
-        movies = new LinkedHashMap<String,MovieEntry>();
+        movies = new LinkedHashMap<>();
     }
 
     /**
@@ -147,8 +147,25 @@ public class MovieList { //singleton
         return instance;
     }
 
+    /**
+     * Use of singleton pattern ensures only one running instance.
+     * @param context android content context used for file location.
+     * @return instance of MovieList
+     */
+    public static synchronized MovieList getInstance(Context context){
+        if(instance == null){
+            instance = new MovieList();
+            instance.setContext(context);
+        }
+        return instance;
+    }
+
+    /**
+     * allows the android context to be set for IO.
+     * @param context android content context used for file location.
+     */
     public void setContext(Context context){
-        this.context = context;
+        instance.context = context;
         CFG_FILE = new File(context.getExternalFilesDir(null), "movlist.cfg");
     }
 
@@ -161,6 +178,10 @@ public class MovieList { //singleton
         return movies.toString();
     }
 
+    /**
+     * Keys to array.
+     * @return keys as string array.
+     */
     public String[] keys(){
         return movies.keySet().toArray(new String[movies.size()]);
     }

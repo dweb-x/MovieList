@@ -12,31 +12,17 @@ import java.io.Serializable;
 public class MovieEntry implements Serializable{
 
     private String title;
-    private TYPE type;
+    private String type;
     private String storyOutline;
-    private RATING rating;
+    private String rating;
     private String language;
     private int runningTime;
-
-    /**
-     * TYPE of { ACTION, DRAMA, COMEDY, ROMANCE, THRILLER }
-     */
-    public static enum TYPE {
-        ACTION, DRAMA, COMEDY, ROMANCE, THRILLER
-    }
-
-    /**
-     *  RATING of { _U, _PG, _12, _15, _18 }
-     */
-    public static enum RATING {
-        _U, _PG, _12, _15, _18
-    }
 
     /**
      * Type of movie
      * @return TYPE from enum list
      */
-    public TYPE getType() {
+    public String getType() {
         return type;
     }
 
@@ -44,7 +30,7 @@ public class MovieEntry implements Serializable{
      * set movie type to one from enum list
      * @param type from enum list
      */
-    public void setType(TYPE type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -52,7 +38,7 @@ public class MovieEntry implements Serializable{
      * Movie rating from enum list
      * @return rating
      */
-    public RATING getRating() {
+    public String getRating() {
         return rating;
     }
 
@@ -60,7 +46,7 @@ public class MovieEntry implements Serializable{
      * set the rating
      * @param rating from enum list RATING
      */
-    public void setRating(RATING rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 
@@ -106,7 +92,7 @@ public class MovieEntry implements Serializable{
 
     /**
      * set the movie language
-     * @param language
+     * @param language language
      */
     public void setLanguage(String language) {
         this.language = language;
@@ -144,8 +130,8 @@ public class MovieEntry implements Serializable{
      * @param language language
      * @param runningTime running time in minutes
      */
-    public MovieEntry(String title, TYPE type, String storyOutline,
-                      RATING rating, String language, int runningTime){
+    public MovieEntry(String title, String type, String storyOutline,
+                      String rating, String language, int runningTime){
         this.title = title;
         this.type = type;
         this.storyOutline = storyOutline;
@@ -164,9 +150,9 @@ public class MovieEntry implements Serializable{
         sb.append("Title: ").append(title).append("\n");
         sb.append("Type: ").append(type).append("\n");
         sb.append("Story Outline: \n").append(storyOutline).append("\n");
-        sb.append("Rating: ").append(rating.toString().substring(1)).append("\n");
+        sb.append("Rating: ").append(rating).append("\n");
         sb.append("Language: ").append(language).append("\n");
-        sb.append("Running Time: ").append(runningTime).append("mins\n");
+        sb.append("Running Time: ").append(runningTime).append(" mins\n");
         return sb.toString();
     }
 }

@@ -33,6 +33,7 @@ public class TitlesFragment extends android.support.v4.app.ListFragment{
                 keyList
         );
         setListAdapter(connectArrayToListView);
+        connectArrayToListView.notifyDataSetChanged();
         View detailsFrame = getActivity().findViewById(R.id.details);
         //detailsFrame.setBackgroundColor(getResources().getColor(R.color.menu_background));
         mDuelPane = detailsFrame != null &&

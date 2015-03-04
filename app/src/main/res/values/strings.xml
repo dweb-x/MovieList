@@ -3,5 +3,48 @@
 
     <string name="app_name">MovieList</string>
     <string name="action_settings">Settings</string>
+    <string name="action_new">New Item</string>
 
+    <!--add item-->
+    <string name="additm_info">Add New Movie</string>
+    <string name="additm_title">Title:</string>
+    <string name="additm_title_hint">Movie title</string>
+    <string name="additm_type">Genre:</string>
+    <string name="additm_storyoutline">Story Outline:</string>
+    <string name="additm_rating">Rating:</string>
+    <string name="additm_lang">Language:</string>
+    <string name="additm_lang_hint">English</string>in minutes
+    <string name="additm_time_hint">in minutes</string>
+    <string name="additm_runtime">Run Time:</string>
+    <string name="additm_max_chars">25 chars max</string>
+    <string name="additm_btn">Add Item</string>
+
+    <!--choose key-->
+    <string name="addkey_info">
+        Choose a unique key to identify your movie. {1 to 10 characters}
+    </string>
+    <string name="addkey_keytaken">Key is already in use.</string>
+
+    <!--type spinner-->
+    <string-array name="types_array">
+        <item>Action</item>
+        <item>Drama</item>
+        <item>Comedy</item>
+        <item>Romance</item>
+        <item>Thriller</item>
+    </string-array>
+
+    <!--rating spinner-->
+    <string-array name="ratings_array">
+        <item>U</item>
+        <item>PG</item>
+        <item>12</item>
+        <item>15</item>
+        <item>18</item>
+    </string-array>
+
+    <!--key check-->
+    <string name="keycheck_info">Choose a unique key to identify your
+    new movie. Between 1 and 10 characters long.</string>
+    <string name="keycheck_btn">Next</string>
 </resources>
