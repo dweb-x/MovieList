@@ -52,7 +52,8 @@ public class MainFragment extends android.support.v4.app.ListFragment{
 
         if(mDuelPane){
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-            showDetails(curIndex);
+            if(!list.isEmpty())
+                showDetails(curIndex);
         }
         //for delete menu on long click
         registerForContextMenu(getListView());
@@ -76,8 +77,6 @@ public class MainFragment extends android.support.v4.app.ListFragment{
                 return true;
             case R.id.delete:
                 list.removeItem(keyList[info.position]);
-                list.saveList();
-                //adapter.notifyDataSetChanged();
                 reload();
                 return true;
             default:

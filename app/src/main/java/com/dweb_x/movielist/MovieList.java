@@ -145,6 +145,7 @@ public class MovieList { //singleton
         if(!movies.containsKey(key))return false;
         else{
             movies.remove(key);
+            saveList();
             return true;
         }
     }
@@ -181,6 +182,10 @@ public class MovieList { //singleton
             return movies.keySet().toArray(new String[movies.size()]);
         else
             return new String[]{"Your movie list is currently empty"} ;
+    }
+
+    public boolean isEmpty(){
+        return movies.isEmpty();
     }
 
     /*
