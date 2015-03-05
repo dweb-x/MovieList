@@ -29,14 +29,13 @@ public class KeyActivity extends ActionBarActivity {
         keyView = (TextView)findViewById(R.id.keyCheckText);
         keyView.addTextChangedListener(new TextWatcher(){
             public void afterTextChanged(Editable s) {
-                Log.v("Key text changed",s.toString());
                 validText(s.toString());
             }
             public void beforeTextChanged(CharSequence s, int start, int count, int after){}
             public void onTextChanged(CharSequence s, int start, int before, int count){}
         });
     }
-
+    // Think about having an icon the changes on valid input??? ------------------------ todo
     /*
      *  Enables the button if passed in string is in size range and unique.
      */
