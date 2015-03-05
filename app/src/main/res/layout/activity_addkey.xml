@@ -17,7 +17,8 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/keyCheckText" />
+        android:id="@+id/keyCheckText"
+        android:maxLength="10" />
 
     <Button
         android:layout_width="match_parent"
@@ -25,5 +26,6 @@
         android:text="@string/keycheck_btn"
         android:id="@+id/keyCheckButton"
         android:paddingTop="8dp"
-        android:onClick="btnCheckKey" />
+        android:onClick="btnCheckKey"
+        android:enabled="false" />
 </LinearLayout>
