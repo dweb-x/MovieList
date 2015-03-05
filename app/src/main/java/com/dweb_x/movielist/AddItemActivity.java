@@ -24,7 +24,6 @@ public class AddItemActivity extends ActionBarActivity {
     private Spinner ratingSpinner, typeSpinner;
     private EditText title, outline, language, runTime;
     private Button btn;
-    private MovieList list;
     private boolean[] isValid = new boolean[4];
 
     @Override
@@ -32,14 +31,7 @@ public class AddItemActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_additem);
         Bundle extras = getIntent().getExtras();
-        if(extras != null) { //remove in final version ------------------------------- todo
-          key = extras.getString("key");
-          Log.v("Passed key", key);
-        } else{
-            Log.v("Add Item Error", "NULL Key");
-        }
-
-        list = MovieList.getInstance(this);
+        key = extras.getString("key");
 
         //Form elements
         title =(EditText)findViewById(R.id.addEditTextTitle);
@@ -64,7 +56,7 @@ public class AddItemActivity extends ActionBarActivity {
         tAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeSpinner.setAdapter(tAdapter);
 
-        //Form element change listeners
+        //Form element change listeners --------------------------------------------------------
         title.addTextChangedListener(new TextWatcher(){
             public void afterTextChanged(Editable s) {
                 isValid[0] = validText(title, s);
@@ -103,6 +95,9 @@ public class AddItemActivity extends ActionBarActivity {
         });
     }
 
+    /*
+     *  returns true if string 1 to 25 chars. Highlights background if invalid
+     */
     private boolean validText(EditText text, Editable s) {
         if((s.length() > 0) && (s.length() < 26)) {
             text.setBackgroundColor(getResources().getColor(R.color.trans));
@@ -113,7 +108,10 @@ public class AddItemActivity extends ActionBarActivity {
             return false;
         }
     }
-    // Not implemented yet ----------------------------------------------------------- todo
+
+    /*
+     *  returns true if non zero int. Highlights background if invalid
+     */
     private boolean validNum(Editable s){
         if((s.length() > 0) && (!s.toString().equals("0"))) {
             runTime.setBackgroundColor(getResources().getColor(R.color.trans));
@@ -125,14 +123,20 @@ public class AddItemActivity extends ActionBarActivity {
         }
     }
 
+    /*
+     *  returns true if every form element contains valid data. used to enable button.
+     */
     private boolean isValidForm(){
         return isValid[0] && isValid[1] &&
                 (isValid[2] || language.getText().length() > 0)&& isValid[3];
     }
 
+    /**
+     * Can only be called when form data is valid and button has been enabled.
+     * Throws NumberFormatException should be impossible so try block omitted.
+     * @param view button that generates event
+     */
     public void addItemClick(View view){
-        Log.v("Add item", "Add button clicked");
-        // add validation ------------------------------------------------------- todo
         MovieEntry entry = new MovieEntry(
                 title.getText().toString(),
                 typeSpinner.getItemAtPosition(typeSpinner.getSelectedItemPosition()).toString(),
@@ -141,11 +145,10 @@ public class AddItemActivity extends ActionBarActivity {
                 language.getText().toString(),
                 Integer.parseInt(runTime.getText().toString())
         );
-        list.newEntry(key, entry);
-        list.saveList();
+        MovieList.getInstance().newEntry(key, entry);
 
+        //start main activity. Clears the activity stack
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        //start main activity and clear all other activity.
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();

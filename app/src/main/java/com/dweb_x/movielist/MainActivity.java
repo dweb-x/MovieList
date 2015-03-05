@@ -1,11 +1,14 @@
 package com.dweb_x.movielist;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
 /**
  * @author : D.Carruthers
  * @version : 1.0
@@ -33,22 +36,46 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.action_new) {
-            Log.v("menuClick", "new");
-            Intent intent = new Intent();
-            intent.setClass(this, KeyActivity.class);
-            startActivity(intent);
-        }
+        switch(id) {
+            case R.id.action_settings:
+                return true;
+            case R.id.action_new:
+                Log.v("menuClick", "new");
+                Intent intent = new Intent();
+                intent.setClass(this, KeyActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.deleteall:
+                AlertDialog.Builder deleteAllConfirm = new AlertDialog.Builder(this);
+                deleteAllConfirm.setMessage("Are you sure?")
+                        .setPositiveButton("Yes", deleteAllDialogClickListener)
+                        .setNegativeButton("No", deleteAllDialogClickListener).show();
+                return true;
 
+        }
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    protected void onResume() {
-//
-//        super.onResume();
-//        this.onCreate(null);
-//    }
+    /*
+     *  Listener for yes/no delete all item confirm dialog.
+     */
+    DialogInterface.OnClickListener deleteAllDialogClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    MovieList.getInstance().removeAllItems();
+                    refresh();
+                    break;
+                case DialogInterface.BUTTON_NEGATIVE:
+                    break;
+            }
+        }
+    };
+
+    private void refresh(){
+        Intent refresh = new Intent(this, MainActivity.class);
+        startActivity(refresh);
+        finish();
+    }
 }

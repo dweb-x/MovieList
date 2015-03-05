@@ -19,7 +19,6 @@ import android.widget.TextView;
 public class KeyActivity extends ActionBarActivity {
 
     private TextView keyView;
-    private MovieList list = MovieList.getInstance(this);
     private Button btn;
 
     @Override
@@ -40,7 +39,7 @@ public class KeyActivity extends ActionBarActivity {
      *  Enables the button if passed in string is in size range and unique.
      */
     private void validText(String s){
-        if(s.length() > 0 && list.isKeyAvailable(s)){
+        if(s.length() > 0 && MovieList.getInstance().isKeyAvailable(s)){
             btn = (Button)findViewById(R.id.keyCheckButton);
             btn.setEnabled(true);
         } else {

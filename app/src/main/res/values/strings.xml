@@ -51,4 +51,5 @@
     <!--list item menu-->
     <string name="menu_edit">Edit</string>
     <string name="menu_delete">Delete</string>
+    <string name="menu_delete_all">Delete All</string>
 </resources>

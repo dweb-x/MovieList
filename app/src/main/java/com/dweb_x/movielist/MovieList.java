@@ -43,13 +43,13 @@ public class MovieList { //singleton
         Log.v("Config found", Boolean.toString(configFound));
     }
 
-//    /**
-//     * Use of singleton pattern ensures only one running instance
-//     * @return instance of MovieList
-//     */
-//    public static synchronized MovieList getInstance(){
-//        return instance;
-//    }
+    /**
+     * Use of singleton pattern ensures only one running instance
+     * @return instance of MovieList
+     */
+    public static synchronized MovieList getInstance(){
+        return instance;
+    }
 
     /**
      * Use of singleton pattern ensures only one running instance.
@@ -83,6 +83,7 @@ public class MovieList { //singleton
         if(movies.containsKey(key)) return false;
         else {
             movies.put(key, entry);
+            saveList();
             return true;
         }
     }
@@ -147,6 +148,16 @@ public class MovieList { //singleton
             movies.remove(key);
             saveList();
             return true;
+        }
+    }
+
+    /**
+     * Destroy list and write empty to file
+     */
+    public void removeAllItems(){
+        if(!movies.isEmpty()) {
+            movies.clear();
+            saveList();
         }
     }
 

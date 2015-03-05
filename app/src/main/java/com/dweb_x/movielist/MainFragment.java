@@ -1,6 +1,6 @@
 package com.dweb_x.movielist;
+
 import android.app.AlertDialog;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -80,9 +80,10 @@ public class MainFragment extends android.support.v4.app.ListFragment{
             case R.id.delete:
                 //confirm dialog
                 this.item = item;
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
-                        .setNegativeButton("No", dialogClickListener).show();
+                AlertDialog.Builder deleteConfirmDialog = new AlertDialog.Builder(getActivity());
+                deleteConfirmDialog.setMessage("Are you sure?")
+                        .setPositiveButton("Yes", deleteDialogClickListener)
+                        .setNegativeButton("No", deleteDialogClickListener).show();
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -92,16 +93,17 @@ public class MainFragment extends android.support.v4.app.ListFragment{
     /*
      *  Listener for yes/no delete item confirm dialog.
      */
-    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+    DialogInterface.OnClickListener deleteDialogClickListener =
+            new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
-                    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                    AdapterView.AdapterContextMenuInfo info =
+                            (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                     list.removeItem(keyList[info.position]);
                     reload();
                     break;
-
                 case DialogInterface.BUTTON_NEGATIVE:
                     break;
             }
@@ -116,7 +118,7 @@ public class MainFragment extends android.support.v4.app.ListFragment{
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Log.v("ListClick","pos:" + position);
+        Log.v("ListClick", "pos:" + position);
         showDetails(position);
     }
 
@@ -132,7 +134,7 @@ public class MainFragment extends android.support.v4.app.ListFragment{
                 android.support.v4.app.FragmentTransaction ft =
                         getFragmentManager().beginTransaction();
                 ft.replace(R.id.details, details);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.commit();
             }
         } else {
