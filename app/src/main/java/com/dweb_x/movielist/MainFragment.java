@@ -1,5 +1,7 @@
 package com.dweb_x.movielist;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +23,7 @@ public class MainFragment extends android.support.v4.app.ListFragment{
     MovieList list;
     String[] keyList;
     ArrayAdapter<String> adapter;
+    MenuItem item;
     boolean mDuelPane;
     int curIndex = 0;
 
@@ -70,19 +73,40 @@ public class MainFragment extends android.support.v4.app.ListFragment{
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch(item.getItemId()) {
             case R.id.edit:
-                // edit stuff here
+                // edit stuff here ------------------------------------------------- todo
                 return true;
             case R.id.delete:
-                list.removeItem(keyList[info.position]);
-                reload();
+                //confirm dialog
+                this.item = item;
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
+
+    /*
+     *  Listener for yes/no delete item confirm dialog.
+     */
+    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                    list.removeItem(keyList[info.position]);
+                    reload();
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
