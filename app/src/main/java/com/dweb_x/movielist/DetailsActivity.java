@@ -25,6 +25,5 @@ public class DetailsActivity extends FragmentActivity {
             getSupportFragmentManager().beginTransaction().add(android.R.id.content,
                     details).commit();
         }
-
     }
 }

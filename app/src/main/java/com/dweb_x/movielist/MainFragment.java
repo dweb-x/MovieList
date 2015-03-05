@@ -3,7 +3,11 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -13,9 +17,10 @@ import android.widget.ListView;
  * Date: 28/02/2015.
  * email: dave@dweb-x.com
  */
-public class TitlesFragment extends android.support.v4.app.ListFragment{
+public class MainFragment extends android.support.v4.app.ListFragment{
     MovieList list;
     String[] keyList;
+    ArrayAdapter<String> adapter;
     boolean mDuelPane;
     int curIndex = 0;
 
@@ -27,15 +32,16 @@ public class TitlesFragment extends android.support.v4.app.ListFragment{
 
         keyList = list.keys();
 
-        ArrayAdapter<String> connectArrayToListView = new
+        adapter = new
                 ArrayAdapter<String>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 keyList
         );
-        setListAdapter(connectArrayToListView);
-        connectArrayToListView.notifyDataSetChanged();
+        setListAdapter(adapter);
+        adapter.notifyDataSetChanged();
         View detailsFrame = getActivity().findViewById(R.id.details);
+
         //detailsFrame.setBackgroundColor(getResources().getColor(R.color.menu_background));
         mDuelPane = detailsFrame != null &&
                 detailsFrame.getVisibility() == View.VISIBLE;
@@ -47,6 +53,35 @@ public class TitlesFragment extends android.support.v4.app.ListFragment{
         if(mDuelPane){
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
             showDetails(curIndex);
+        }
+        //for delete menu on long click
+        registerForContextMenu(getListView());
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if (v == getListView()) {
+            MenuInflater inflater = getActivity().getMenuInflater();
+            inflater.inflate(R.menu.list_menu, menu);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch(item.getItemId()) {
+            case R.id.edit:
+                // edit stuff here
+                return true;
+            case R.id.delete:
+                list.removeItem(keyList[info.position]);
+                list.saveList();
+                //adapter.notifyDataSetChanged();
+                reload();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
         }
     }
 
@@ -84,4 +119,17 @@ public class TitlesFragment extends android.support.v4.app.ListFragment{
             startActivity(intent);
         }
     }
+
+    /*
+     * Reload this when list changes.
+     * Probably a much better way of doing this. If you know please let me know.
+     */
+    public void reload(){
+        Intent refresh = new Intent(getActivity(), MainActivity.class);
+        startActivity(refresh);
+        getActivity().finish();
+
+    }
+
+
 }

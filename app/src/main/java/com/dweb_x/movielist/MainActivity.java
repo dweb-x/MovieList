@@ -44,4 +44,11 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+//    @Override
+//    protected void onResume() {
+//
+//        super.onResume();
+//        this.onCreate(null);
+//    }
 }

@@ -118,11 +118,12 @@ public class MovieEntry implements Serializable{
      * Constructor
      */
     public MovieEntry() {
-
+        //init through other constructor
+        this("","","","","",0);
     }
 
     /**
-     *
+     * Constructor
      * @param title movie title
      * @param type type of movie
      * @param storyOutline outline of the story

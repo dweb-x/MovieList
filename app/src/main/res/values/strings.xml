@@ -47,4 +47,8 @@
     <string name="keycheck_info">Choose a unique key to identify your
     new movie. Between 1 and 10 characters long.</string>
     <string name="keycheck_btn">Next</string>
+
+    <!--list item menu-->
+    <string name="menu_edit">Edit</string>
+    <string name="menu_delete">Delete</string>
 </resources>

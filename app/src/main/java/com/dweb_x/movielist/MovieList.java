@@ -22,7 +22,7 @@ public class MovieList { //singleton
     private static MovieList instance;
     private static Map<String,MovieEntry> movies;
     private File CFG_FILE;
-    private static Thread loadThread, saveThread;
+    private final static Object lock = new Object();
 
     /**
      * Constructor uses singleton pattern. call getInstance() for new instance.
@@ -93,23 +93,21 @@ public class MovieList { //singleton
      */
     public synchronized void saveList(){
         try {
-            saveThread = new Thread(new Runnable() {
+            new Thread(new Runnable() {
                 public void run() {
                     try {
-//                        while(loadThread != null){
-//                            Thread.sleep(100);
-//                        }
-                        Log.v("Save path", CFG_FILE.toString());
-                        FileOutputStream out = new FileOutputStream(CFG_FILE);
-                        ObjectOutputStream os = new ObjectOutputStream(out);
-                        os.writeObject(movies);
-                        Log.v("Saved", movies.size() + " items to disk");
-                        out.close();
-                        os.close();
+                        synchronized (lock){
+                            FileOutputStream out = new FileOutputStream(CFG_FILE);
+                            ObjectOutputStream os = new ObjectOutputStream(out);
+                            os.writeObject(movies);
+                            Log.v("Saved", movies.size() + " items to disk");
+                            out.close();
+                            os.close();
+                        }
                     } catch (Exception e) {logException(e);}
                 }
-            });
-            saveThread.start();
+            }).start();
+
         } catch(Exception e){logException(e);}
     }
 
@@ -120,24 +118,21 @@ public class MovieList { //singleton
     @SuppressWarnings("unchecked")
     public synchronized void loadList(){
         try {
-            loadThread = new Thread(new Runnable() {
+            new Thread(new Runnable() {
                 public void run() {
                     try{
-//                        while(saveThread != null){
-//                            Thread.sleep(100);
-//                        }
-                        Log.v("Load path", CFG_FILE.toString());
-                        FileInputStream in = new FileInputStream(CFG_FILE);
-                        ObjectInputStream os = new ObjectInputStream(in);
-                        movies = (Map<String,MovieEntry>) os.readObject();
-                        Log.v("Loaded", movies.size() + " Entries from disk");
-                        in.close();
-                        os.close();
+                        synchronized (lock) {
+                            FileInputStream in = new FileInputStream(CFG_FILE);
+                            ObjectInputStream os = new ObjectInputStream(in);
+                            movies = (Map<String, MovieEntry>) os.readObject();
+                            Log.v("Loaded", movies.size() + " Entries from disk");
+                            in.close();
+                            os.close();
+                        }
                     } catch(Exception e){logException(e);}
                 }
-            });
+            }).start();
 
-            loadThread.start();
         } catch(Exception e){ logException(e); }
     }
 

@@ -18,8 +18,7 @@ import android.widget.Spinner;
 public class AddItemActivity extends ActionBarActivity {
 
     private String key;
-    private Spinner ratingSpinner;
-    private Spinner typeSpinner;
+    private Spinner ratingSpinner, typeSpinner;
     private EditText title, outline, language, runTime;
     private MovieList list;
 
@@ -28,7 +27,7 @@ public class AddItemActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_additem);
         Bundle extras = getIntent().getExtras();
-        if(extras != null) {
+        if(extras != null) { //remove in final version ------------------------------- todo
           key = extras.getString("key");
           Log.v("Passed key", key);
         } else{
@@ -75,6 +74,7 @@ public class AddItemActivity extends ActionBarActivity {
         list.saveList();
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        //start main activity and clear all other activity.
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
