@@ -147,7 +147,7 @@ public class AddItemActivity extends ActionBarActivity {
         );
         MovieList.getInstance().newEntry(key, entry);
 
-        //start main activity. Clears the activity stack
+        //restarts after delete all.
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

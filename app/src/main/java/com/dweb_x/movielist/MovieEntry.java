@@ -148,12 +148,12 @@ public class MovieEntry implements Serializable{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Title: ").append(title).append("\n");
-        sb.append("Type: ").append(type).append("\n");
-        sb.append("Story Outline: \n").append(storyOutline).append("\n");
-        sb.append("Rating: ").append(rating).append("\n");
-        sb.append("Language: ").append(language).append("\n");
-        sb.append("Running Time: ").append(runningTime).append(" mins\n");
+        sb.append("<b>Title: </b>").append(title).append("<br>");
+        sb.append("<b>Type: </b>").append(type).append("<br>");
+        sb.append("<b>Story Outline: </b>").append(storyOutline).append("<br>");
+        sb.append("<b>Rating: </b>").append(rating).append("<br>");
+        sb.append("<b>Language: </b>").append(language).append("<br>");
+        sb.append("<b>Running Time: </b>").append(runningTime).append(" mins<br>");
         return sb.toString();
     }
 }

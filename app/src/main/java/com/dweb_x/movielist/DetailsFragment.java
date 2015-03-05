@@ -2,6 +2,7 @@ package com.dweb_x.movielist;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Html;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,9 +41,14 @@ public class DetailsFragment extends android.support.v4.app.Fragment{
                 TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                         4, getActivity().getResources().getDisplayMetrics());
         text.setPadding(padding, padding, padding, padding);
+        text.setLineSpacing(2, 1.5f);
         scroll.addView(text);
         //Output Format here ------------------------------------------------------------ !todo
-        text.setText(list.getEntry(keyList[getShownIndex()]).toString());
+        text.setText(Html.fromHtml(
+                        list.getEntry(
+                                keyList[getShownIndex()]
+                        ).toString())
+        );
         return scroll;
     }
 }
