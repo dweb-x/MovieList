@@ -39,7 +39,7 @@ public class KeyActivity extends ActionBarActivity {
      *  Enables the button if passed in string is in size range and unique.
      */
     private void validText(String s){
-        if(s.length() > 0 && MovieList.getInstance().isKeyAvailable(s)){
+        if(s.length() > 0 && MovieList.getInstance(this).isKeyAvailable(s)){
             btn = (Button)findViewById(R.id.keyCheckButton);
             btn.setEnabled(true);
         } else {

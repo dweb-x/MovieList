@@ -30,28 +30,21 @@ public class MovieList { //singleton
     private MovieList(Context context){
         movies = new LinkedHashMap<>();
         CFG_FILE = new File(context.getApplicationContext().getFilesDir() , "movlist.cfg");
-        boolean configFound = false;
 
         //if file exists load it else create new.
         if(CFG_FILE.exists()){
             loadList();
-            configFound = true;
         }else {
+            //Should only happen once on first install.
             saveList();
+            Log.v("No config found", "Created new");
         }
-        Log.v("Config found", Boolean.toString(configFound));
     }
 
     /**
-     * Use of singleton pattern ensures only one running instance
-     * @return instance of MovieList
-     */
-    public static synchronized MovieList getInstance(){
-        return instance;
-    }
-
-    /**
-     * Use of singleton pattern ensures only one running instance.
+     * Use of singleton pattern ensures only one running instance. Object is rebuilt from
+     * file. Data persistent always, even if garbage collected due to low memory. Soon as
+     * a null reference is spotted the object is reconstructed from disk.
      * @param context android content context used for file location.
      * @return instance of MovieList
      */
@@ -193,6 +186,9 @@ public class MovieList { //singleton
             return new String[]{"Your movie list is currently empty"} ;
     }
 
+    /*
+     *  flags if the list is empty
+     */
     public boolean isEmpty(){
         return movies.isEmpty();
     }

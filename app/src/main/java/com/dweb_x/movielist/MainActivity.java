@@ -64,7 +64,7 @@ public class MainActivity extends ActionBarActivity {
         public void onClick(DialogInterface dialog, int which) {
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
-                    MovieList.getInstance().removeAllItems();
+                    MovieList.getInstance(getApplicationContext()).removeAllItems();
                     refresh();
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:

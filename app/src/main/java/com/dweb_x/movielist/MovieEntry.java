@@ -1,6 +1,5 @@
 package com.dweb_x.movielist;
 
-
 import java.io.Serializable;
 
 /**

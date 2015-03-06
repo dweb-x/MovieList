@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -20,11 +19,11 @@ import android.widget.Spinner;
  */
 public class AddItemActivity extends ActionBarActivity {
 
-    private String key;
-    private Spinner ratingSpinner, typeSpinner;
-    private EditText title, outline, language, runTime;
-    private Button btn;
-    private boolean[] isValid = new boolean[4];
+    private static String key;
+    private static Spinner ratingSpinner, typeSpinner;
+    private static EditText title, outline, language, runTime;
+    private static Button btn;
+    private static boolean[] isValid = new boolean[4];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +42,7 @@ public class AddItemActivity extends ActionBarActivity {
         //Set up rating spinner
         ratingSpinner = (Spinner) findViewById(R.id.addSpinnerRating);
 
-        ArrayAdapter<CharSequence> rAdapter = ArrayAdapter.createFromResource(this,
+        final ArrayAdapter<CharSequence> rAdapter = ArrayAdapter.createFromResource(this,
                 R.array.ratings_array, android.R.layout.simple_spinner_item);
         rAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         ratingSpinner.setAdapter(rAdapter);
@@ -51,7 +50,7 @@ public class AddItemActivity extends ActionBarActivity {
         //Set up type spinner
         typeSpinner = (Spinner) findViewById(R.id.addTypeSpinner);
 
-        ArrayAdapter<CharSequence> tAdapter = ArrayAdapter.createFromResource(this,
+        final ArrayAdapter<CharSequence> tAdapter = ArrayAdapter.createFromResource(this,
                 R.array.types_array, android.R.layout.simple_spinner_item);
         tAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeSpinner.setAdapter(tAdapter);
@@ -60,7 +59,6 @@ public class AddItemActivity extends ActionBarActivity {
         title.addTextChangedListener(new TextWatcher(){
             public void afterTextChanged(Editable s) {
                 isValid[0] = validText(title, s);
-                Log.v("isValid",Boolean.toString(isValidForm()));
                 btn.setEnabled(isValidForm());
             }
             public void beforeTextChanged(CharSequence s, int start, int count, int after){}
@@ -145,7 +143,7 @@ public class AddItemActivity extends ActionBarActivity {
                 language.getText().toString(),
                 Integer.parseInt(runTime.getText().toString())
         );
-        MovieList.getInstance().newEntry(key, entry);
+        MovieList.getInstance(this).newEntry(key, entry);
 
         //restarts after delete all.
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
