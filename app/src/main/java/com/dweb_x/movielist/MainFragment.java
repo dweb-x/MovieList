@@ -20,43 +20,41 @@ import android.widget.ListView;
  * email: dave@dweb-x.com
  */
 public class MainFragment extends android.support.v4.app.ListFragment{
-    MovieList list;
-    String[] keyList;
-    ArrayAdapter<String> adapter;
-    MenuItem item;
-    boolean mDuelPane;
-    int curIndex = 0;
+    private static MovieList list;
+    private static String[] keyList;
+    private static int listIndex = 0;
+    private static boolean isHorizontal;
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //init movie list
+        //initialize movie list
         list = MovieList.getInstance(getActivity());
 
         keyList = list.keys();
 
-        adapter = new
+        final ArrayAdapter<String> adapter = new
                 ArrayAdapter<String>(
                 getActivity(),
-                android.R.layout.simple_list_item_activated_1,
+                android.R.layout.simple_list_item_activated_1,// fix layout ------------------ todo
                 keyList
         );
         setListAdapter(adapter);
         adapter.notifyDataSetChanged();
         View detailsFrame = getActivity().findViewById(R.id.details);
 
-        //detailsFrame.setBackgroundColor(getResources().getColor(R.color.menu_background));
-        mDuelPane = detailsFrame != null &&
+        isHorizontal = detailsFrame != null &&
                 detailsFrame.getVisibility() == View.VISIBLE;
 
         if(savedInstanceState != null){
-            curIndex = savedInstanceState.getInt("curIndex");
+            listIndex = savedInstanceState.getInt("listIndex");
         }
 
-        if(mDuelPane){
+        if(isHorizontal){
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
             if(!list.isEmpty())
-                showDetails(curIndex);
+                showDetails(listIndex);
         }
         //for delete menu on long click
         registerForContextMenu(getListView());
@@ -73,47 +71,48 @@ public class MainFragment extends android.support.v4.app.ListFragment{
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        final AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch(item.getItemId()) {
             case R.id.edit:
-                // edit stuff here ------------------------------------------------- todo
+                // Allow user to edit items ------------------------------------------------- todo
                 return true;
             case R.id.delete:
                 //confirm dialog
-                this.item = item;
                 AlertDialog.Builder deleteConfirmDialog = new AlertDialog.Builder(getActivity());
-                deleteConfirmDialog.setMessage("Are you sure?")
-                        .setPositiveButton("Yes", deleteDialogClickListener)
-                        .setNegativeButton("No", deleteDialogClickListener).show();
+                deleteConfirmDialog.setMessage("Are you sure?");
+                deleteConfirmDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                       switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                list.removeItem(keyList[info.position]);
+                                reload();
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                });
+
+                deleteConfirmDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                deleteConfirmDialog.show();
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
 
-    /*
-     *  Listener for yes/no delete item confirm dialog.
-     */
-    DialogInterface.OnClickListener deleteDialogClickListener =
-            new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which){
-                case DialogInterface.BUTTON_POSITIVE:
-                    AdapterView.AdapterContextMenuInfo info =
-                            (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-                    list.removeItem(keyList[info.position]);
-                    reload();
-                    break;
-                case DialogInterface.BUTTON_NEGATIVE:
-                    break;
-            }
-        }
-    };
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("curIndex", curIndex);
+        outState.putInt("listIndex", listIndex);
     }
 
     @Override
@@ -123,8 +122,8 @@ public class MainFragment extends android.support.v4.app.ListFragment{
     }
 
     private void showDetails(int index) {
-        curIndex = index;
-        if(mDuelPane){
+        listIndex = index;
+        if(isHorizontal){
             getListView().setItemChecked(index, true);
             DetailsFragment details = (DetailsFragment)
                     getFragmentManager().findFragmentById(R.id.details);

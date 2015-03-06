@@ -21,8 +21,8 @@ public class MovieList { //singleton
 
     private static MovieList instance;
     private static Map<String,MovieEntry> movies;
-    private File CFG_FILE;
-    private final static Object lock = new Object();
+    private static final Object lock = new Object();
+    private static File CFG_FILE;
 
     /**
      * Constructor uses singleton pattern. call getInstance() for new instance.
@@ -39,7 +39,6 @@ public class MovieList { //singleton
         }else {
             saveList();
         }
-
         Log.v("Config found", Boolean.toString(configFound));
     }
 
@@ -167,10 +166,9 @@ public class MovieList { //singleton
      * @return MovieItem or null if not in collection
      */
     public MovieEntry getEntry(String key){
-        MovieEntry entry;
+
         if(movies.containsKey(key)){
-            entry = movies.get(key);
-            return entry;
+            return movies.get(key);
         } else
             return null;
     }

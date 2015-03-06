@@ -5,6 +5,8 @@
             android:title="@string/menu_edit" />
         <item android:id="@+id/delete"
             android:title="@string/menu_delete" />
+        <item android:id="@+id/cancel"
+            android:title="@string/menu_cancel" />
 
     <!--android:icon="@android:drawable/my_icon_delete"-->
 </menu>

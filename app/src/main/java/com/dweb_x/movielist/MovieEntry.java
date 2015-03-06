@@ -20,7 +20,7 @@ public class MovieEntry implements Serializable{
 
     /**
      * Type of movie
-     * @return TYPE from enum list
+     * @return String from enum list
      */
     public String getType() {
         return type;
@@ -44,7 +44,7 @@ public class MovieEntry implements Serializable{
 
     /**
      * set the rating
-     * @param rating from enum list RATING
+     * @param rating rating
      */
     public void setRating(String rating) {
         this.rating = rating;
@@ -142,19 +142,17 @@ public class MovieEntry implements Serializable{
     }
 
     /**
-     *
+     *  Returns HTML String.
      * @return entry as string
      */
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("<b>Title: </b>").append(title).append("<br>");
-        sb.append("<b>Type: </b>").append(type).append("<br>");
-        sb.append("<b>Story Outline: </b>").append(storyOutline).append("<br>");
-        sb.append("<b>Rating: </b>").append(rating).append("<br>");
-        sb.append("<b>Language: </b>").append(language).append("<br>");
-        sb.append("<b>Running Time: </b>").append(runningTime).append(" mins<br>");
-        return sb.toString();
+        return "<b>Title: </b>" + title +
+                "<br><b>Type: </b>" + type +
+                "<br><b>Story Outline: </b>" + storyOutline +
+                "<br><b>Rating: </b>" + rating +
+                "<br><b>Language: </b>" + language +
+                "<br><b>Running Time: </b>" + runningTime + " mins<br>";
     }
 }
 
